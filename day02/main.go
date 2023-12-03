@@ -24,6 +24,7 @@ func main() {
 	fileScanner := bufio.NewScanner(readFile)
 
 	total := 0
+	power := 0
 	
 	cubes := make(map[string]int)
 
@@ -59,6 +60,11 @@ func main() {
 			}
 		}
 
+		// Add the required "power" of this game to the total power.
+		// Power is the product of multiplying the maximum number of cubes that would've been required
+
+		power += cubes["red"] * cubes["green"] * cubes["blue"]
+
 		fmt.Printf("red: %d, green: %d, blue: %d - ", cubes["red"], cubes["green"], cubes["blue"])
 		// See if game is possible given our maxes
 
@@ -71,5 +77,6 @@ func main() {
 		}
 	}
 
-	fmt.Println(total)
+	fmt.Printf("Total sub of possible games: %d\n", total)
+	fmt.Printf("Total power: %d\n", power)
 }
