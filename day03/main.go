@@ -15,6 +15,7 @@ type Part struct {
 }
 
 type Symbol struct {
+	symbol string
 	x, y int
 }
 
@@ -59,10 +60,11 @@ func main() {
 
 		// Find all symbols in the line
 		foundSymbols := r2.FindAllStringIndex(line, -1)
+		foundSymbolChars := r2.FindAllString(line, -1)
 
 		// Iterate over each symbol and add to symbols array
-		for _, symbol := range foundSymbols {
-			symbols = append(symbols, Symbol{symbol[0], lineno})
+		for i, symbol := range foundSymbols {
+			symbols = append(symbols, Symbol{foundSymbolChars[i], symbol[0], lineno})
 		}
 		lineno++
 	}
@@ -94,5 +96,35 @@ func main() {
 
 	// fmt.Println(len(parts))
 	// fmt.Println(len(symbols))
-	fmt.Println(total)
+	fmt.Printf("Part 1 answer - total of relevant parts: %d\n",total)
+
+	// Part 2
+	// Find gear ratios. Gears are '*' symbols adjacent to exactly 2 parts
+	// Iterate over each symbol and find gears
+
+	total = 0
+	for _, s := range symbols {
+		if s.symbol == "*" {
+			// Create slice of matching parts
+			var adjparts []string
+
+			// Check if there are 2 parts adjacent to the gear
+			for _, p := range parts {
+				minX := max(p.x - 1, 0)
+				maxX := p.x + len(p.partno)
+				minY := max(p.y - 1, 0)
+				maxY := p.y + 1
+
+				if s.x >= minX && s.x <= maxX && s.y >= minY && s.y <= maxY {
+					adjparts = append(adjparts, p.partno)
+				}
+			}
+			if len(adjparts) == 2 {
+				part1, _ := strconv.Atoi(adjparts[0])
+				part2, _ := strconv.Atoi(adjparts[1])
+				total += part1 * part2
+			}
+		}
+	}
+	fmt.Printf("Part 2 answer - total of gear ratios: %d\n",total)
 }
