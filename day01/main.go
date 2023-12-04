@@ -1,7 +1,7 @@
 package main
 
 import (
-	"adventofcode2024/common"
+	"adventofcode2023/common"
 	"bufio"
 	"fmt"
 	"os"
